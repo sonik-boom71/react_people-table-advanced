@@ -1,6 +1,10 @@
-import { NavLink } from 'react-router-dom';
+import { Link, NavLink, useMatch, useSearchParams } from 'react-router-dom';
+import cn from 'classnames';
 
 export const Navbar = () => {
+  const [searchParams] = useSearchParams();
+  const isPeoplePage = useMatch('/people/*');
+
   return (
     <nav
       data-cy="nav"
@@ -12,7 +16,7 @@ export const Navbar = () => {
         <div className="navbar-brand">
           <NavLink
             className={({ isActive }) =>
-              `navbar-item${isActive ? ' has-background-grey-lighter' : ''}`
+              cn('navbar-item', { 'has-background-grey-lighter': isActive })
             }
             to="/"
             end
@@ -20,14 +24,14 @@ export const Navbar = () => {
             Home
           </NavLink>
 
-          <NavLink
-            className={({ isActive }) =>
-              `navbar-item${isActive ? ' has-background-grey-lighter' : ''}`
-            }
-            to="/people"
+          <Link
+            className={cn('navbar-item', {
+              'has-background-grey-lighter': !!isPeoplePage,
+            })}
+            to={{ pathname: '/people', search: searchParams.toString() }}
           >
             People
-          </NavLink>
+          </Link>
         </div>
       </div>
     </nav>
